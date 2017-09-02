@@ -106,7 +106,7 @@ namespace Elections.Controllers
 			_context.AddRange(votes2);
 			await _context.SaveChangesAsync();
 
-			return Redirect("/");
+			return Ok("Your votes have been recieved; thank you for voting.");
 		}
 
 
