@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20170902135429_AddCommentsToCandidate")]
+    partial class AddCommentsToCandidate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
