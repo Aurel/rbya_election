@@ -164,7 +164,15 @@ namespace Elections.Controllers
 				score.Add(g.Key, new Tuple<int, int>(g.Count(x => x.For), g.Count(x => !x.For)));
 			}
 
-			return Json(score.Select(x => new { Name = x.Key.Name, Position = x.Key.Position.ToString(), For = x.Value.Item1, Against = x.Value.Item2 }).OrderBy(x => x.Position));
+			return View(score.Select(x => new ReportObject { Name = x.Key.Name, Position = x.Key.Position.ToString(), For = x.Value.Item1, Against = x.Value.Item2 }).OrderBy(x => x.Position));
+		}
+
+		public class ReportObject
+		{
+			public string Name { get; set; }
+			public string Position { get; set; }
+			public int For { get; set; }
+			public int Against { get; set; }
 		}
 		
 		[Route("/logout")]

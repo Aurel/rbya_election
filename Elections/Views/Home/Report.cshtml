@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Elections.Controllers.HomeController.ReportObject>
+@{
+    ViewData["Title"] = "Report";
+}
+
+<h2>Report</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>For</th>
+            <th>Against</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rep in Model)
+        {
+            <tr>
+                <td>@rep.Name</td>
+                <td>@rep.Position</td>
+                <td>@rep.For</td>
+                <td>@rep.Against</td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar active progress-bar-striped progress-bar-success" role="progressbar" style="width:@(((double)rep.For*100)/((double)rep.For + rep.Against))%">
+                        </div>
+                        <div class="progress-bar active progress-bar-striped progress-bar-danger" role="progressbar" style="width:@(((double)rep.Against*100)/(rep.For + rep.Against))%">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
