@@ -5,18 +5,22 @@
 }
 
 <h2>Vote for @ViewBag.Code</h2>
-
-@foreach(var group in Model)
-{
-    <h1>@group.Position</h1>
-    @foreach(var candidate in group.Candidates)
+<form role="form">
+    @foreach (var group in Model)
     {
-        <h3>@candidate.Name</h3>
-        <p>@candidate.Reasons</p>
-        <hr />
+        <h1>@group.Position</h1>
+        @foreach (var candidate in group.Candidates)
+        {
+            <h3>@candidate.Name</h3>
+            <p>@candidate.Reasons</p>
+            <p>@candidate.Background</p>
+            <label class="switch">
+                <input name="" type="checkbox">
+                <span class="slider"></span>
+            </label>
+        }
     }
-}
-
+</form>
 @*<table class="table">
     <thead>
         <tr>
