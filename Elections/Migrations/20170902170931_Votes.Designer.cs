@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20170902170931_Votes")]
+    partial class Votes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,8 +55,6 @@ namespace Elections.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("CandidateId");
-
-                    b.Property<bool>("For");
 
                     b.Property<int?>("VoterId");
 
