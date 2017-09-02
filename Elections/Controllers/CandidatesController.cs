@@ -16,9 +16,22 @@ namespace Elections.Controllers
 		}
 
 		// GET: Candidates
+
+		public async Task<IActionResult> Candidate()
+		{
+			return View("Index", await _context.Candidates.ToListAsync());
+		}
+
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Candidates.ToListAsync());
+			var model = _context.Candidates.GroupBy(x => x.Position).Select(x => new PositionalGrouping
+			{
+				Candidates = x.OrderBy(c => c.Name).ToList(),
+				MaxCandidates = x.Key == Position.Committee ? 15 : 1,
+				Position = x.Key
+			});
+
+			return View("Candidates", model);	
 		}
 
 		// GET: Candidates/Details/5

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Elections.Options;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elections.Controllers
 {
@@ -78,6 +79,9 @@ namespace Elections.Controllers
 			var voter = _context.Voters.SingleOrDefault(v => v.Code == HttpContext.Session.GetString("code"));
 			if (voter == null) return BadRequest("Bad Request");
 
+			if (_context.Votes.Include(x => x.Voter).Any(x => x.Voter == voter))
+				return BadRequest($"It seems you've already tried to vote once, {voter.Email}; you can't vote again. If you are not {voter.Email}, please go to the /logout endpoint.");
+
 			var candidates = _context.Candidates.ToList();
 			var votes = new Dictionary<Candidate, bool>();
 
@@ -106,7 +110,7 @@ namespace Elections.Controllers
 			_context.AddRange(votes2);
 			await _context.SaveChangesAsync();
 
-			return Ok("Your votes have been recieved; thank you for voting.");
+			return Redirect("/logout");
 		}
 
 
@@ -140,7 +144,7 @@ namespace Elections.Controllers
 
 			var model = _context.Candidates.GroupBy(x => x.Position).Select(x => new PositionalGrouping
 			{
-				Candidates = x.ToList(),
+				Candidates = x.OrderBy(c => c.Name).ToList(),
 				MaxCandidates = x.Key == Position.Committee ? 15 : 1,
 				Position = x.Key
 			});
@@ -148,7 +152,21 @@ namespace Elections.Controllers
 			return View(model);
 		}
 
+		public IActionResult Report()
+		{
+			var group = _context.Votes.Include(x => x.Candidate).GroupBy(x => x.Candidate);
 
+			Dictionary<Candidate, Tuple<int, int>> score = new Dictionary<Candidate, Tuple<int, int>>();
+		
+			foreach(var g in group)
+			{
+				g.Count(x => x.For);
+				score.Add(g.Key, new Tuple<int, int>(g.Count(x => x.For), g.Count(x => !x.For)));
+			}
+
+			return Json(score.Select(x => new { Name = x.Key.Name, Position = x.Key.Position.ToString(), For = x.Value.Item1, Against = x.Value.Item2 }).OrderBy(x => x.Position));
+		}
+		
 		[Route("/logout")]
 		public IActionResult Logout()
 		{

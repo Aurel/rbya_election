@@ -1,0 +1,32 @@
+﻿@model IEnumerable<PositionalGrouping>
+
+@{
+	ViewData["Title"] = "RBYA Elections - Voting";
+}
+
+<h1 class="text-center">RBYA Voting</h1>
+@foreach (var group in Model)
+{
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2>@group.Position</h2>
+		</div>
+		<ul class="list-group">
+			@foreach (var candidate in group.Candidates)
+			{
+				<li class="list-group-item">
+                    <img src="~/images/@candidate.ImageUrl" />
+					<div class="media">
+						<div class="media-body">
+							<h4>@candidate.Name</h4>
+							<h4><small>@candidate.Location</small></h4>
+							<strong>Reasons:</strong> @candidate.Reasons<br />
+							<strong>Background:</strong> @candidate.Background<br />
+							<span class="text-light">Nominated by @candidate.Submitter</span>
+						</div>
+					</div>
+				</li>
+			}
+		</ul>
+	</div>
+}
