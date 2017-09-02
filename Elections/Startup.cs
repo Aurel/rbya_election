@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Elections.Services;
+using Elections.Options;
 
 namespace Elections
 {
@@ -24,6 +26,9 @@ namespace Elections
 			var connection = Configuration.GetConnectionString("DatabaseContext");
 			services.AddDbContext<Models.ElectionContext>(options => options.UseSqlServer(connection));
 			services.AddMvc();
+
+			services.Configure<GmailOptions>(Configuration.GetSection("Gmail"));
+			services.AddScoped<Mailer>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

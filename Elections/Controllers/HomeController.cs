@@ -1,19 +1,28 @@
 ﻿using Elections.Models;
+using Elections.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Elections.Options;
 
 namespace Elections.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ElectionContext _context;
+		private readonly Mailer _mailer;
 
-		public HomeController(ElectionContext context)
+		public HomeController(ElectionContext context, Mailer mailer)
 		{
 			_context = context;
+			_mailer = mailer;
 		}
 
 		public IActionResult Index()
@@ -36,17 +45,26 @@ namespace Elections.Controllers
 			//var hashArray = md5.ComputeHash(System.Text.Encoding.ASCII.GetBytes(email));
 
 			//var hash = System.Text.Encoding.UTF8.GetString(md5.Hash);
-
+			var code = email.MD5();
 			var voter = new Voter
 			{
 				Email = email,
-				Code = email.MD5()
+				Code = code
 			};
 
 			_context.Add(voter);
 			await _context.SaveChangesAsync();
+			
+			_mailer.SendConfirmationMail(email, code);
 
 			return Json(voter);
+		}
+
+		[Route("/test")]
+		public string Test()
+		{
+			var options = HttpContext.RequestServices.GetService<IOptions<GmailOptions>>();
+			return options.Value.Email;
 		}
 
 
