@@ -18,10 +18,23 @@ namespace Elections.Controllers
 			_context = context;
 		}
 
+		public class VoterRecord
+		{
+			public Voter Voter { get; set; }
+			public bool Voted { get; set; }
+		}
+
+
 		// GET: Voters
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Voters.ToListAsync());
+			List<VoterRecord> voterRecord = new List<VoterRecord>();
+
+			foreach(var voter in _context.Voters)
+			{
+				voterRecord.Add(new VoterRecord { Voted = _context.Votes.Include(x => x.Voter).Any(x => x.Voter == voter), Voter = voter } );
+			}
+			return View(voterRecord);
 		}
 
 		// GET: Voters/Details/5

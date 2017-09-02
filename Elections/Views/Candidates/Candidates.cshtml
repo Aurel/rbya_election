@@ -15,14 +15,14 @@
 			@foreach (var candidate in group.Candidates)
 			{
 				<li class="list-group-item">
-                    <img src="~/images/@candidate.ImageUrl" />
+                    <img src="@candidate.ImageUrl" style="margin:auto;" />
 					<div class="media">
 						<div class="media-body">
 							<h4>@candidate.Name</h4>
 							<h4><small>@candidate.Location</small></h4>
 							<strong>Reasons:</strong> @candidate.Reasons<br />
 							<strong>Background:</strong> @candidate.Background<br />
-							<span class="text-light">Nominated by @candidate.Submitter</span>
+							<h4><small>Nominated by @candidate.Submitter</small></h4>
 						</div>
 					</div>
 				</li>
