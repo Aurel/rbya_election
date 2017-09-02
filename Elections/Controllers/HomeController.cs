@@ -52,19 +52,9 @@ namespace Elections.Controllers
 			_context.Add(voter);
 			await _context.SaveChangesAsync();
 			
-			_mailer.SendConfirmationMail(email, code);
-
-			return Json(voter);
+			return Ok(_mailer.SendConfirmationMail(email, code));
 		}
-
-		[Route("/test")]
-		public string Test()
-		{
-			var options = HttpContext.RequestServices.GetService<IOptions<GmailOptions>>();
-			return options.Value.Email;
-		}
-
-
+		
 		[HttpPost]
 		[Route("/login")]
 		public IActionResult Login([FromForm(Name = "code")]string code)
