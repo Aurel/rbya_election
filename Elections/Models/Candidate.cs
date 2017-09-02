@@ -7,5 +7,6 @@
 		public string Background { get; set; }
 		public string Church { get; set; }
 		public string Location { get; set; }
+		public Position Position { get; set; }
 	}
 }
