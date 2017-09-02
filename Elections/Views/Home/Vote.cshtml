@@ -5,7 +5,7 @@
 }
 
 <h1 class="text-center">RBYA Voting</h1>
-<form role="form">
+<form role="form" method="post" action="submit">
 	@foreach (var group in Model)
 	{
 		<div class="panel panel-default">
@@ -15,101 +15,31 @@
 			<ul class="list-group">
 				@foreach (var candidate in group.Candidates)
 				{
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object" src="http://placehold.it/256x256">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4>@candidate.Name</h4>
-                                <h4></h4>
-                                <strong>Reasons:</strong> @candidate.Reasons<br />
-                                <strong>Background:</strong> @candidate.Background
-                            </div>
-                        </div>
-
-                        <label class="switch">
-                            <input name="" type="checkbox">
-                            <span class="slider"></span>
-                        </label>
-                    </li>
-}
+					<li class="list-group-item">
+						<div class="media">
+							<div class="media-body">
+								<h4>@candidate.Name</h4>
+								<h4><small>@candidate.Location</small></h4>
+								<strong>Reasons:</strong> @candidate.Reasons<br />
+								<strong>Background:</strong> @candidate.Background<br />
+								<span class="text-light">Nominated by @candidate.Submitter</span>
+							</div>
+						</div>
+					</li>
+				}
+				@foreach (var candidate in group.Candidates)
+				{
+					<li class="list-group-item text-right">
+							<h4 style="display:inline">@candidate.Name</h4>
+							<label class="switch">
+								<input name="@candidate.Id" type="checkbox">
+								<span class="slider"></span>
+							</label>
+					</li>
+				}
 			</ul>
 
 		</div>
 	}
+    <button type="submit" class="btn-primary btn">Submit</button>
 </form>
-@*<table class="table">
-	<thead>
-		<tr>
-				<th>
-					@Html.DisplayNameFor(model => model.Name)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Church)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Location)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Position)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Reasons)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Background)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Submitter)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Comments)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.ImageUrl)
-				</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-@foreach (var item in Model) {
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.Name)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Church)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Location)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Position)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Reasons)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Background)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Submitter)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Comments)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ImageUrl)
-			</td>
-			<td>
-				<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-				<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-				<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-			</td>
-		</tr>
-}*@
-	</tbody>
-</table>

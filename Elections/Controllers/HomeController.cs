@@ -71,6 +71,30 @@ namespace Elections.Controllers
 		}
 
 
+		[HttpPost]
+		[Route("/submit")]
+		public IActionResult Submit()
+		{
+			var candidates = _context.Candidates.ToList();
+			var votes = new Dictionary<Candidate, bool>();
+
+			foreach(var c in candidates)
+			{
+				votes.Add(c, false);
+			}
+
+			foreach(var a in Request.Form)
+			{
+				var cand = candidates.Find(x => x.Id == int.Parse(a.Key));
+				votes[cand] = a.Value == "on";
+			}
+
+			
+
+			return Redirect("/vote");
+		}
+
+
 		[HttpGet]
 		[Route("/login")]
 		public IActionResult LoginGet([FromQuery(Name = "code")]string code)
