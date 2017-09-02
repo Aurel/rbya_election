@@ -22,8 +22,8 @@ namespace Elections.Services
 				From = new MailAddress(_gmailOptions.Email),
 				Subject = "Voting Confirmation",
 				Body = $@"<h1>RBYA Elections!</h1><p>Thank you for signing up to vote for the RBYA elections. 
-Your code is {code} if the link below doesn't work feel free to enter on the website <a href=""www.rbya.vote"">RBYA.vote</a>.</p>
-<h3><a href=""http://rbya.vote/login?code={code}"">Click Here to Vote!</a>",
+Your code is {code} if the link below doesn't work feel free to enter on <a href=""http://rbya.azurewebsites.net"">the website</a>.</p>
+<h3><a href=""http://rbya.azurewebsites.net/login?code={code}"">Click Here to Vote!</a>",
 				IsBodyHtml = true
 			};
 			message.To.Add(recipient);
