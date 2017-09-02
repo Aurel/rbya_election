@@ -80,6 +80,22 @@ namespace Elections.Controllers
 			return Redirect("/vote");
 		}
 
+
+		[HttpGet]
+		[Route("/login")]
+		public IActionResult LoginGet([FromQuery(Name = "code")]string code)
+		{
+			code = code.Trim();
+
+			if (!_context.Voters.Any(x => x.Code == code))
+			{
+				return Ok("No signup has been requested with this code!");
+			}
+
+			HttpContext.Session.SetString("code", code);
+			return Redirect("/vote");
+		}
+
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
