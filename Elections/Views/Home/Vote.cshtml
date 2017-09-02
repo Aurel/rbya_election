@@ -1,95 +1,115 @@
 ﻿@model IEnumerable<PositionalGrouping>
 
 @{
-    ViewData["Title"] = "RBYA Elections - Voting";
+	ViewData["Title"] = "RBYA Elections - Voting";
 }
 
-<h2>Vote for @ViewBag.Code</h2>
+<h1 class="text-center">RBYA Voting</h1>
 <form role="form">
-    @foreach (var group in Model)
-    {
-        <h1>@group.Position</h1>
-        @foreach (var candidate in group.Candidates)
-        {
-            <h3>@candidate.Name</h3>
-            <p>@candidate.Reasons</p>
-            <p>@candidate.Background</p>
-            <label class="switch">
-                <input name="" type="checkbox">
-                <span class="slider"></span>
-            </label>
-        }
-    }
+	@foreach (var group in Model)
+	{
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2>@group.Position</h2>
+			</div>
+			<ul class="list-group">
+				@foreach (var candidate in group.Candidates)
+				{
+                    <li class="list-group-item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" src="http://placehold.it/256x256">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4>@candidate.Name</h4>
+                                <h4></h4>
+                                <strong>Reasons:</strong> @candidate.Reasons<br />
+                                <strong>Background:</strong> @candidate.Background
+                            </div>
+                        </div>
+
+                        <label class="switch">
+                            <input name="" type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </li>
+}
+			</ul>
+
+		</div>
+	}
 </form>
 @*<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Church)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Position)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Reasons)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Background)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Submitter)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+	<thead>
+		<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Church)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Location)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Position)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Reasons)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Background)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Submitter)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Comments)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.ImageUrl)
+				</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Church)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Position)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reasons)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Background)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Submitter)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Church)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Location)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Position)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Reasons)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Background)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Submitter)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Comments)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ImageUrl)
+			</td>
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+				<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+				<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+			</td>
+		</tr>
 }*@
-    </tbody>
+	</tbody>
 </table>
