@@ -10,5 +10,6 @@
 		public string Background { get; set; }
 		public string Submitter { get; set; }
 		public string Comments { get; set; }
+		public string ImageUrl { get; set; }
 	}
 }
