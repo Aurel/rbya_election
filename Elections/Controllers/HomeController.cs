@@ -73,25 +73,40 @@ namespace Elections.Controllers
 
 		[HttpPost]
 		[Route("/submit")]
-		public IActionResult Submit()
+		public async Task<IActionResult> Submit()
 		{
+			var voter = _context.Voters.SingleOrDefault(v => v.Code == HttpContext.Session.GetString("code"));
+			if (voter == null) return BadRequest("Bad Request");
+
 			var candidates = _context.Candidates.ToList();
 			var votes = new Dictionary<Candidate, bool>();
 
-			foreach(var c in candidates)
+			foreach(var c in _context.Candidates)
 			{
 				votes.Add(c, false);
 			}
 
 			foreach(var a in Request.Form)
 			{
-				var cand = candidates.Find(x => x.Id == int.Parse(a.Key));
+				var cand = _context.Candidates.SingleOrDefault(x => x.Id == int.Parse(a.Key));
+				if (cand == null) continue;
 				votes[cand] = a.Value == "on";
 			}
 
-			
+			List<Vote> votes2 = new List<Models.Vote>();
+			foreach(var v in votes)
+			{
+				votes2.Add(new Vote
+				{
+					Candidate = v.Key,
+					For = v.Value,
+					Voter = voter
+				});
+			}
+			_context.AddRange(votes2);
+			await _context.SaveChangesAsync();
 
-			return Redirect("/vote");
+			return Redirect("/");
 		}
 
 
