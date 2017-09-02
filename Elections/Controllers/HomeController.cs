@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Elections.Options;
+using System.Collections.Generic;
 
 namespace Elections.Controllers
 {
@@ -40,11 +41,7 @@ namespace Elections.Controllers
 			{
 				return Ok("You've already signed up");
 			}
-
-			//var md5 = System.Security.Cryptography.MD5.Create();
-			//var hashArray = md5.ComputeHash(System.Text.Encoding.ASCII.GetBytes(email));
-
-			//var hash = System.Text.Encoding.UTF8.GetString(md5.Hash);
+			
 			var code = email.MD5();
 			var voter = new Voter
 			{
@@ -94,8 +91,18 @@ namespace Elections.Controllers
 			var code = HttpContext.Session.GetString("code");
 			if (string.IsNullOrEmpty(code)) return Redirect("/logout");
 
-			return Ok(code);
+			ViewBag.Code = code;
+
+			var model = _context.Candidates.GroupBy(x => x.Position).Select(x => new PositionalGrouping
+			{
+				Candidates = x.ToList(),
+				MaxCandidates = x.Key == Position.Committee ? 15 : 1,
+				Position = x.Key
+			});
+
+			return View(model);
 		}
+
 
 		[Route("/logout")]
 		public IActionResult Logout()
