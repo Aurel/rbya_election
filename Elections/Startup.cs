@@ -20,6 +20,7 @@ namespace Elections
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSession();
 			var connection = Configuration.GetConnectionString("DatabaseContext");
 			services.AddDbContext<Models.ElectionContext>(options => options.UseSqlServer(connection));
 			services.AddMvc();
@@ -36,6 +37,8 @@ namespace Elections
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
+			app.UseStatusCodePages();
+			app.UseSession();
 
 			app.UseStaticFiles();
 

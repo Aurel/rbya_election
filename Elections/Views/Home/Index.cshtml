@@ -8,14 +8,14 @@
 	</div>
 
 	<div class="col-md-6 col-xs-12">
-		<form role="form">
+		<form role="form" action="signup" method="post">
 			<div class="panel panel-default" style="margin:20px;">
 				<div class="panel-heading">
 					<label class="control-label" for="email">Sign Up To Vote</label>
 				</div>
 				<div class="panel-body">
 					<div class="form-group">
-						<input type="email" class="form-control" id="email" placeholder="Enter email">
+						<input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
 					</div>
 					<button type="submit" class="btn btn-primary">Sign Up</button>
 				</div>
@@ -24,14 +24,14 @@
 
 	</div>
 	<div class="col-md-6 col-xs-12">
-		<form role="form">
+		<form role="form" action="login" method="post">
 			<div class="panel panel-default" style="margin:20px;">
 				<div class="panel-heading">
 					<label class="control-label" for="code">Log in with your secret code</label>
 				</div>
 				<div class="panel-body">
 					<div class="form-group">
-						<input type="email" class="form-control" id="code" placeholder="Secret Code">
+						<input class="form-control" name="code" id="code" placeholder="Secret Code">
 					</div>
 					<button type="submit" class="btn btn-primary">Log In</button>
 				</div>
