@@ -21,6 +21,9 @@ namespace Elections.Controllers
 		private readonly ElectionContext _context;
 		private readonly Mailer _mailer;
 
+		public const bool VOTING_CLOSED = true;
+		public const int LAST_VOTE_ID = 91;
+
 		public HomeController(ElectionContext context, Mailer mailer)
 		{
 			_context = context;
@@ -137,6 +140,8 @@ namespace Elections.Controllers
 		[Route("/vote")]
 		public IActionResult Vote()
 		{
+			if (VOTING_CLOSED) return Redirect("/");
+
 			var code = HttpContext.Session.GetString("code");
 			if (string.IsNullOrEmpty(code)) return Redirect("/logout");
 
@@ -152,9 +157,12 @@ namespace Elections.Controllers
 			return View(model);
 		}
 
+		[Route("/report")]
 		public IActionResult Report()
 		{
-			var group = _context.Votes.Include(x => x.Candidate).GroupBy(x => x.Candidate);
+			var group = _context.Votes
+				.Include(x => x.Candidate)
+				.GroupBy(x => x.Candidate);
 
 			Dictionary<Candidate, Tuple<int, int>> score = new Dictionary<Candidate, Tuple<int, int>>();
 		
@@ -164,11 +172,121 @@ namespace Elections.Controllers
 				score.Add(g.Key, new Tuple<int, int>(g.Count(x => x.For), g.Count(x => !x.For)));
 			}
 
-			return View(score.Select(x => new ReportObject { Name = x.Key.Name, Position = x.Key.Position.ToString(), For = x.Value.Item1, Against = x.Value.Item2 }).OrderBy(x => x.Position));
+			return View(score
+				.Select(x => new ReportObject(x))
+				.OrderByDescending(x => x.For)
+				.OrderBy(x => x.Position));
+		}
+
+		[Route("/timedreport")]
+		public IActionResult TimedReport()
+		{
+			var group = _context.Votes
+				.Include(x => x.Candidate)
+				.Include(x => x.Voter)
+				.Where(x => x.Voter.Id < LAST_VOTE_ID)
+				.GroupBy(x => x.Candidate);
+
+			Dictionary<Candidate, Tuple<int, int>> score = new Dictionary<Candidate, Tuple<int, int>>();
+
+			foreach (var g in group)
+			{
+				g.Count(x => x.For);
+				score.Add(g.Key, new Tuple<int, int>(g.Count(x => x.For), g.Count(x => !x.For)));
+			}
+
+			return View("Report", score
+				.Select(x => new ReportObject(x))
+				.OrderByDescending(x => x.For)
+				.OrderBy(x => x.Position));
+		}
+
+		[Route("/timedcleanreport")]
+		public IActionResult TimedCleanReport()
+		{
+			var group = _context.Votes
+				.Include(x => x.Candidate)
+				.Include(x => x.Voter)
+				.Where(x => x.Voter.Id <= LAST_VOTE_ID)
+				.GroupBy(x => x.Voter)
+				.Where(g => g.Count(x => x.For) > 1)
+				.SelectMany(g => g)
+				.GroupBy(x => x.Candidate);
+
+			var score = new Dictionary<Candidate, Tuple<int, int>>();
+
+			foreach (var g in group)
+			{
+				g.Count(x => x.For);
+				score.Add(g.Key, new Tuple<int, int>(g.Count(x => x.For), g.Count(x => !x.For)));
+			}
+
+			return View("Report", score
+				.Select(x => new ReportObject (x))
+				.OrderByDescending(x => x.For)
+				.OrderBy(x => x.Position));
+		}
+
+
+		[Route("/cleanreport")]
+		public IActionResult CleanReport()
+		{
+			var groups = _context.Votes
+				.Include(x => x.Candidate)
+				.Include(x => x.Voter)
+				.GroupBy(x => x.Voter)
+				.Where(g => g.Count(x => x.For) > 1)
+				.SelectMany(g => g).GroupBy(x => x.Candidate);
+
+			Dictionary<Candidate, Tuple<int, int>> score = new Dictionary<Candidate, Tuple<int, int>>();
+
+			foreach (var group in groups)
+			{
+				group.Count(x => x.For);
+				score.Add(group.Key, new Tuple<int, int>(group.Count(x => x.For), group.Count(x => !x.For)));
+			}
+
+			return View("Report", score
+				.Select(x => new ReportObject(x))
+				.OrderByDescending(x => x.For)
+				.OrderBy(x => x.Position));
+		}
+
+		[Route("/uncleanreport")]
+		public IActionResult UncleanReport()
+		{
+			var groups = _context.Votes
+				.Include(x => x.Candidate)
+				.Include(x => x.Voter)
+				.GroupBy(x => x.Voter)
+				.Where(g => g.Count(x => x.For) <= 1)
+				.SelectMany(g => g)
+				.GroupBy(x => x.Candidate);
+
+			Dictionary<Candidate, Tuple<int, int>> score = new Dictionary<Candidate, Tuple<int, int>>();
+
+			foreach (var group in groups)
+			{
+				group.Count(x => x.For);
+				score.Add(group.Key, new Tuple<int, int>(group.Count(x => x.For), group.Count(x => !x.For)));
+			}
+
+			return View("Report", score
+				.Select(x => new ReportObject(x))
+				.OrderByDescending(x => x.For)
+				.OrderBy(x => x.Position));
 		}
 
 		public class ReportObject
 		{
+			public ReportObject(KeyValuePair<Candidate, Tuple<int, int>> kvp)
+			{
+				Name = kvp.Key.Name;
+				Position = kvp.Key.Position.ToString();
+				For = kvp.Value.Item1;
+				Against = kvp.Value.Item2;
+			}
+
 			public string Name { get; set; }
 			public string Position { get; set; }
 			public int For { get; set; }

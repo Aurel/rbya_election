@@ -1,51 +1,60 @@
 ﻿@model IEnumerable<Elections.Controllers.VotersController.VoterRecord>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Voter.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Voter.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Voter.Code)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+	<thead>
+		<tr>
+				<th>
+					Positivity
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Voter.Email)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Voter.Code)
+				</th>
+			<th>Bias</th>
+		</tr>
+	</thead>
+	<tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @if (item.Voted)
-                {
-                    <span class="glyphicon glyphicon-star"></span>
-                }
-                @Html.DisplayFor(modelItem => item.Voter.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Voter.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Voter.Code)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Voter.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Voter.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Voter.Id">Delete</a>
-            </td>
-        </tr>
+		<tr class="@((item.Positivity <= 1 && item.Voted) ? "bg-danger" : "")">
+			<td>
+				@if (item.Voted)
+				{
+					<span class="glyphicon glyphicon-star"></span>
+                    <span class="pull-right">@item.Positivity</span>
+				}
+				
+                
+				@Html.DisplayFor(modelItem => item.Voter.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Voter.Email)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Voter.Id)
+			</td>
+
+			<td @*class="@(item.A? (item.B? "bg-danger" : "bg-primary" ) : "bg-warning" )"*@ style="vertical-align:middle;text-align:right">
+            @if (item.A)
+            {
+                <span class="glyphicon glyphicon-knight pull-right"></span>
+            }
+            @if (item.B)
+            {
+                <span class="glyphicon glyphicon-sunglasses pull-right"></span>
+            }
+			</td>
+		</tr>
 }
-    </tbody>
+	</tbody>
 </table>

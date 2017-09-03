@@ -22,6 +22,9 @@ namespace Elections.Controllers
 		{
 			public Voter Voter { get; set; }
 			public bool Voted { get; set; }
+			public bool A { get; set; }
+			public bool B { get; set; }
+			public int Positivity { get; set; }
 		}
 
 
@@ -32,8 +35,34 @@ namespace Elections.Controllers
 
 			foreach(var voter in _context.Voters)
 			{
-				voterRecord.Add(new VoterRecord { Voted = _context.Votes.Include(x => x.Voter).Any(x => x.Voter == voter), Voter = voter } );
+				var votes = _context.Votes.Include(x => x.Voter).Include(x => x.Candidate).Where(x => x.Voter == voter);
+				if(votes.Count() == 0)
+				{
+					voterRecord.Add(new VoterRecord
+					{
+						Voted = false,
+						Voter = voter,
+						A = false,
+						B = false,
+						Positivity = 0
+					});
+					continue;
+				}
+				
+				var a = votes.Single(x => x.Candidate.Id == 2).For;
+				var d = votes.Single(x => x.Candidate.Id == 4).For;
+				var count = votes.Where(x => x.For).Count();
+
+				voterRecord.Add(new VoterRecord
+				{
+					Voted = _context.Votes.Count() != 0,
+					Voter = voter,
+					A = a,
+					B = d,
+					Positivity = count
+				});
 			}
+
 			return View(voterRecord);
 		}
 

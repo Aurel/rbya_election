@@ -6,7 +6,7 @@
 	<div class="row" style="margin-bottom:100px;">
 		<img src="~/images/elections.png" style="margin:auto; width:50%;" />
 	</div>
-
+    <h1><strong>Voting Has Been Closed</strong></h1>
 	<div class="col-md-6 col-xs-12">
 		<form role="form" action="signup" method="post">
 			<div class="panel panel-default" style="margin:20px;">
@@ -15,9 +15,9 @@
 				</div>
 				<div class="panel-body">
 					<div class="form-group">
-						<input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
+						<input type="email" disabled readonly name="email" class="form-control" id="email" placeholder="Enter email">
 					</div>
-					<button type="submit" class="btn btn-primary">Sign Up</button>
+					<button type="submit" disabled class="btn btn-primary">Sign Up</button>
 				</div>
 			</div>
 		</form>
@@ -31,9 +31,9 @@
 				</div>
 				<div class="panel-body">
 					<div class="form-group">
-						<input class="form-control" name="code" id="code" placeholder="Secret Code">
+						<input class="form-control" disabled readonly name="code" id="code" placeholder="Secret Code">
 					</div>
-					<button type="submit" class="btn btn-primary">Log In</button>
+					<button type="submit" disabled class="btn btn-primary">Log In</button>
 				</div>
 			</div>
 		</form>
