@@ -11,5 +11,6 @@
 		public string Submitter { get; set; }
 		public string Comments { get; set; }
 		public string ImageUrl { get; set; }
+		public bool Selected { get; set; }
 	}
 }

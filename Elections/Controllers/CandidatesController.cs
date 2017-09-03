@@ -63,7 +63,7 @@ namespace Elections.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Name,Church,Location,Position,Reasons,Background,Submitter,Comments,ImageUrl,Id")] Candidate candidate)
+		public async Task<IActionResult> Create([Bind("Name,Church,Location,Position,Reasons,Background,Submitter,Comments,ImageUrl,Selected,Id")] Candidate candidate)
 		{
 			if (ModelState.IsValid)
 			{
@@ -95,7 +95,7 @@ namespace Elections.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Name,Church,Location,Position,Reasons,Background,Submitter,Comments,ImageUrl,Id")] Candidate candidate)
+		public async Task<IActionResult> Edit(int id, [Bind("Name,Church,Location,Position,Reasons,Background,Submitter,Comments,ImageUrl,Selected,Id")] Candidate candidate)
 		{
 			if (id != candidate.Id)
 			{

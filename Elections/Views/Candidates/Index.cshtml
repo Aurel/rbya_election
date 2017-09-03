@@ -12,6 +12,8 @@
 <table class="table">
     <thead>
         <tr>
+            <th>@Html.DisplayNameFor(model => model.Selected)
+</th>
                 <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
@@ -45,6 +47,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @if(item.Selected)
+                {
+                    <span class="glyphicon glyphicon-star"></span>
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
