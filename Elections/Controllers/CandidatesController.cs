@@ -24,7 +24,9 @@ namespace Elections.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = _context.Candidates.GroupBy(x => x.Position).Select(x => new PositionalGrouping
+			var model = _context.Candidates
+			.Where(x => !x.Archived)
+			.GroupBy(x => x.Position).Select(x => new PositionalGrouping
 			{
 				Candidates = x.OrderBy(c => c.Name).ToList(),
 				MaxCandidates = x.Key == Position.Committee ? 15 : 1,

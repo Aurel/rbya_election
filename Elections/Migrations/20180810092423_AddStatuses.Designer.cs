@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20180810092423_AddStatuses")]
+    partial class AddStatuses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,8 +29,6 @@ namespace Elections.Migrations
                     b.Property<bool>("Accepted");
 
                     b.Property<bool>("Approved");
-
-                    b.Property<bool>("Archived");
 
                     b.Property<string>("Background")
                         .IsRequired()

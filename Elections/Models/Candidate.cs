@@ -11,14 +11,14 @@ namespace Elections.Models
 		public string Name { get; set; }
 
 		[Required]
-		[Display(Name = "Home Church Name", GroupName = "Candidate")]
+		[Display(Name = "Home Church Name", GroupName = "Candidate"), DefaultValue("")]
 		public string Church { get; set; }
 
 		[Required]
 		[Display(Name = "City, State", GroupName = "Candidate")]
 		public string Location { get; set; }
 
-		[Display(Name = "Email", GroupName = "Candidate")]
+		[Display(Name = "Email", GroupName = "Candidate"), DefaultValue("")]
 		[EmailAddress]
 		[Required]
 		public string Email { get; set; }
@@ -27,11 +27,11 @@ namespace Elections.Models
 		[DefaultValue(Position.Committee)]
 		public Position Position { get; set; } = Position.Committee;
 
-		[Required, MinLength(10), MaxLength(5000)]
+		[Required, MinLength(10), MaxLength(5000), DefaultValue("")]
 		[Display(Name = "Candidate Background", GroupName = "Candidate")]
 		public string Background { get; set; }
 
-		[Required, MinLength(10), MaxLength(5000)]
+		[Required, MinLength(10), MaxLength(5000), DefaultValue("")]
 		[Display(Name = "Reasons for Nomination", GroupName = "Candidate")]
 		public string Reasons { get; set; }
 
@@ -43,14 +43,16 @@ namespace Elections.Models
 		[Display(Name = "Submitter Email", GroupName = "Submitter")]
 		[EmailAddress]
 		[Required]
-		[DefaultValue("lazar.aurel@gmail.com")]
+		[DefaultValue("elections@rbya.org")]
 		public string SubmitterEmail { get; set; }
 
 		public DateTime CreatedDate { get; set; }
 
+		public bool Accepted { get; set; }
+		public bool Approved { get; set; }
+		public bool Seconded { get; set; }
+		public bool Archived { get; set; }
 
-
-		public string Comments { get; set; }
 		public string ImageUrl { get; set; }
 		public bool Selected { get; set; }
 	}

@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20180810090757_AddSomeDefaultValues")]
+    partial class AddSomeDefaultValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,18 +26,14 @@ namespace Elections.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Accepted");
-
-                    b.Property<bool>("Approved");
-
-                    b.Property<bool>("Archived");
-
                     b.Property<string>("Background")
                         .IsRequired()
                         .HasMaxLength(5000);
 
                     b.Property<string>("Church")
                         .IsRequired();
+
+                    b.Property<string>("Comments");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -58,8 +55,6 @@ namespace Elections.Migrations
                     b.Property<string>("Reasons")
                         .IsRequired()
                         .HasMaxLength(5000);
-
-                    b.Property<bool>("Seconded");
 
                     b.Property<bool>("Selected");
 

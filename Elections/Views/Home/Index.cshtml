@@ -6,10 +6,15 @@
 	<div class="row" style="margin-bottom:100px;">
 		<img src="~/images/elections.png" style="margin:auto; width:50%;" />
 	</div>
-	<h1 class="hidden"><strong>Voting Has Been Closed</strong></h1>
+    <div class="btn-group-lg">
+        <a class="btn btn-success" href="/nominate">Nominate somebody</a>
+        @*<a class="btn btn-danger" href="/process">How it Works</a>*@
+    </div>
 
-	<h1><strong>Meet the New Committee</strong></h1>
-    <h2>Coming soon right here.</h2>
+	<h1><strong>Coming Soon</strong></h1>
+    <h4>Feel free to nominate somebody - we're ironing out a few technical bugs but the nomination process should work fine. 
+    It might just be a day or two before we let them know. For now, please use the link above to nominate people. </h4>
+
 	<div class="hidden">
 		@foreach (var position in Enum.GetValues(typeof(Position)))
 		{
@@ -18,9 +23,10 @@
 			{
 				<h3>@c.Name</h3>
 			}
-            <br />
+			<br />
 		}
 	</div>
+    <h2>Nominations opening on August 10th.</h2>
 	<div class="col-md-6 col-xs-12 hidden">
 		<form role="form" action="signup" method="post">
 			<div class="panel panel-default" style="margin:20px;">
