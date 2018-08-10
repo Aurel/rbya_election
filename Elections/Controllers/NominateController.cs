@@ -28,6 +28,8 @@ namespace Elections.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(Candidate candidate)
 		{
+			candidate.Guid = System.Guid.NewGuid();
+
 			if (ModelState.IsValid)
 			{
 				_context.Add(candidate);

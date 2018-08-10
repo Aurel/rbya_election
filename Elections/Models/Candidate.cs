@@ -48,6 +48,8 @@ namespace Elections.Models
 
 		public DateTime CreatedDate { get; set; }
 
+		public Guid Guid { get; set; }
+
 		public bool Accepted { get; set; }
 		public bool Approved { get; set; }
 		public bool Seconded { get; set; }
