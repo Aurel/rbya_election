@@ -13,6 +13,13 @@ namespace Elections.Models
 				Database.Migrate();
 		}
 
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Candidate>()
+				.Property(b => b.CreatedDate)
+				.HasDefaultValueSql("getdate()");
+		}
+
 		public DbSet<Candidate> Candidates { get; set; }
 		public DbSet<Voter> Voters { get; set; }
 		public DbSet<Vote> Votes { get; set; }

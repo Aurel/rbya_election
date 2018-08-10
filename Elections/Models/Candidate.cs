@@ -46,7 +46,9 @@ namespace Elections.Models
 		[DefaultValue("lazar.aurel@gmail.com")]
 		public string SubmitterEmail { get; set; }
 
-		public DateTime CreationDate { get; set; }
+		public DateTime CreatedDate { get; set; }
+
+
 
 		public string Comments { get; set; }
 		public string ImageUrl { get; set; }
