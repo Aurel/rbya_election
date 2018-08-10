@@ -1,9 +1,7 @@
 ﻿@model Elections.Models.Candidate
-
 @{
     ViewData["Title"] = "Nomination";
 }
-
 <div class="center-block text-center container">
     <div class="row" style="margin-bottom:100px;">
         <img src="~/images/elections.png" style="margin:auto; width:25%;" />
@@ -20,71 +18,66 @@
     </div>
 </div>
 
+<br />
+<hr />
+<h2>Candidate Information</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Church" class="control-label"></label>
+                <input asp-for="Church" class="form-control" />
+                <span asp-validation-for="Church" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Position" class="control-label"></label>
+                <select asp-for="Position" asp-items="Html.GetEnumSelectList<Position>()" class="form-control"></select>
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Background" class="control-label"></label>
+                <textarea asp-for="Background" class="form-control"></textarea>
+                <span asp-validation-for="Background" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reasons" class="control-label"></label>
+                <textarea asp-for="Reasons" class="form-control"></textarea>
+                <span asp-validation-for="Reasons" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Submitter" class="control-label"></label>
+                <input asp-for="Submitter" class="form-control" />
+                <span asp-validation-for="Submitter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmitterEmail" class="control-label"></label>
+                <input asp-for="SubmitterEmail" class="form-control" />
+                <span asp-validation-for="SubmitterEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
 
-    <br />
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="View">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Church" class="control-label"></label>
-                    <input asp-for="Church" class="form-control" />
-                    <span asp-validation-for="Church" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Location" class="control-label"></label>
-                    <input asp-for="Location" class="form-control" />
-                    <span asp-validation-for="Location" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Position" class="control-label"></label>
-                    <select asp-for="Position" class="form-control"></select>
-                    <span asp-validation-for="Position" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Reasons" class="control-label"></label>
-                    <input asp-for="Reasons" class="form-control" />
-                    <span asp-validation-for="Reasons" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Background" class="control-label"></label>
-                    <input asp-for="Background" class="form-control" />
-                    <span asp-validation-for="Background" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Submitter" class="control-label"></label>
-                    <input asp-for="Submitter" class="form-control" />
-                    <span asp-validation-for="Submitter" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Comments" class="control-label"></label>
-                    <input asp-for="Comments" class="form-control" />
-                    <span asp-validation-for="Comments" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ImageUrl" class="control-label"></label>
-                    <input asp-for="ImageUrl" class="form-control" />
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input asp-for="Selected" /> @Html.DisplayNameFor(model => model.Selected)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </form>
-        </div>
-    </div>
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

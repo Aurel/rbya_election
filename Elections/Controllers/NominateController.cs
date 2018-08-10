@@ -1,6 +1,7 @@
 ﻿using Elections.Models;
 using Elections.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Elections.Controllers
 {
@@ -19,7 +20,27 @@ namespace Elections.Controllers
 		[Route("/nominate")]
 		public IActionResult Nominate()
 		{
-			return View("Nominate");
+			Candidate c = new Candidate();
+			return View("Nominate", c);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(Candidate candidate)
+		{
+			if (ModelState.IsValid)
+			{
+				_context.Add(candidate);
+				await _context.SaveChangesAsync();
+				return Redirect("/Candidates"); //TODO: Thank you page.
+			}
+
+			return RedirectToAction(nameof(Nominate));
+		}
+
+		public IActionResult Thanks()
+		{
+			return View();
 		}
 
 	}
