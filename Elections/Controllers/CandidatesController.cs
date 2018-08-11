@@ -1,5 +1,6 @@
 ﻿using Elections.Models;
 using Elections.Services;
+using Elections.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -98,16 +99,17 @@ namespace Elections.Controllers
 		}
 
 		[HttpPost]
-		[Route("confirmation/{guid}/confirm")]
-		public async Task<IActionResult> Confirm(Guid? guid)
+		[Route("confirmation/confirm")]
+		public async Task<IActionResult> Confirm(ConfirmationResult confirmation)
 		{
-			if (guid == null)
+			
+			if (confirmation == null || confirmation.UniqueId == null)
 			{
 				return NotFound();
 			}
 
 			var candidate = await _context.Candidates
-				.SingleOrDefaultAsync(m => m.Guid == guid);
+				.SingleOrDefaultAsync(m => m.Guid == confirmation.UniqueId);
 
 			if (candidate == null)
 			{
@@ -115,15 +117,25 @@ namespace Elections.Controllers
 			}
 
 			candidate.Confirmed = true;
-			candidate.Accepted = true;
+			candidate.Accepted = confirmation.Accepted;
+
 			_context.Update(candidate);
 			await _context.SaveChangesAsync();
 
-			return Ok();
+			var result = "Thank you for submitting your response.";
+			if(confirmation.Accepted)
+			{
+				result += "Your response has been noted and you are now eligible to be seconded.";
+			}
+			else
+			{
+				result += "Your response has been noted and you will be removed from the candidates list.";
+			}
+
+			return Ok(result);
 		}
 
-
-
+		#region Create
 
 		// GET: Candidates/Create
 		public IActionResult Create()
@@ -147,6 +159,9 @@ namespace Elections.Controllers
 			return View(candidate);
 		}
 
+		#endregion
+
+		#region Edit
 		// GET: Candidates/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
@@ -168,7 +183,7 @@ namespace Elections.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Name,Church,Location,Position,Reasons,Background,Submitter,Comments,ImageUrl,Selected,Id")] Candidate candidate)
+		public async Task<IActionResult> Edit(int id, Candidate candidate)
 		{
 			if (id != candidate.Id)
 			{
@@ -198,6 +213,10 @@ namespace Elections.Controllers
 			return View(candidate);
 		}
 
+
+		#endregion
+
+		#region Delete
 		// GET: Candidates/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
@@ -226,6 +245,8 @@ namespace Elections.Controllers
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
+
+		#endregion
 
 		private bool CandidateExists(int id)
 		{

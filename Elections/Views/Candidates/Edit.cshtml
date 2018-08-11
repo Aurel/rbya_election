@@ -28,24 +28,72 @@
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Position" class="control-label"></label>
-                <select asp-for="Position" asp-items="Html.GetEnumSelectList<Position>()" class="form-control"></select>
+                <select asp-for="Position" asp-items="@Html.GetEnumSelectList<Position>()" class="form-control"></select>
                 <span asp-validation-for="Position" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Reasons" class="control-label"></label>
-                <input asp-for="Reasons" class="form-control" />
-                <span asp-validation-for="Reasons" class="text-danger"></span>
+                <label asp-for="Background" class="control-label"></label>
+                <textarea asp-for="Background" class="form-control"></textarea>
+                <span asp-validation-for="Background" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Background" class="control-label"></label>
-                <input asp-for="Background" class="form-control" />
-                <span asp-validation-for="Background" class="text-danger"></span>
+                <label asp-for="Reasons" class="control-label"></label>
+                <textarea asp-for="Reasons" class="form-control"></textarea>
+                <span asp-validation-for="Reasons" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Submitter" class="control-label"></label>
                 <input asp-for="Submitter" class="form-control" />
                 <span asp-validation-for="Submitter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmitterEmail" class="control-label"></label>
+                <input asp-for="SubmitterEmail" class="form-control" />
+                <span asp-validation-for="SubmitterEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input readonly asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Guid" class="control-label"></label>
+                <input asp-for="Guid" class="form-control" />
+                <span asp-validation-for="Guid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Confirmed" /> @Html.DisplayNameFor(model => model.Confirmed)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Accepted" /> @Html.DisplayNameFor(model => model.Accepted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Ready" /> @Html.DisplayNameFor(model => model.Ready)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Ignored" /> @Html.DisplayNameFor(model => model.Ignored)
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="ImageUrl" class="control-label"></label>
@@ -71,6 +119,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
