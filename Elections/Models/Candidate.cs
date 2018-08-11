@@ -57,5 +57,18 @@ namespace Elections.Models
 
 		public string ImageUrl { get; set; }
 		public bool Selected { get; set; }
+		
+		public CandidateState State
+		{
+			get
+			{
+				if (Ready) return CandidateState.Seconded;
+				if (Confirmed && Accepted) return CandidateState.Accepted;
+				if (Confirmed && !Accepted) return CandidateState.Declined;
+				if (Ignored) return CandidateState.Removed;
+
+				return CandidateState.Nominated;
+			}
+		}
 	}
 }

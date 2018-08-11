@@ -9,4 +9,10 @@ namespace Elections
 		public List<Candidate> Candidates { get; set; }
 		public int MaxCandidates { get; set; }
 	}
+
+	public class StatePositionalGrouping
+	{
+		public List<PositionalGrouping> Groupings;
+		public CandidateState state;
+	}
 }

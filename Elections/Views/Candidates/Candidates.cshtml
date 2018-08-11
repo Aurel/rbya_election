@@ -9,10 +9,10 @@
 {
 	<div class="panel panel-default">
 		<div class="panel-heading">
-            <h2>@Html.DisplayFor(modelItem => group.Position)</h2>
+			<h2>@Html.DisplayFor(modelItem => group.Position)</h2>
 		</div>
 		<ul class="list-group">
-			@foreach (var candidate in group.Candidates)
+			@foreach (var candidate in group.Candidates.OrderBy(x => x.State))
 			{
 				<li class="list-group-item">
 					<img src="@candidate.ImageUrl" style="margin:auto;" />
@@ -20,9 +20,32 @@
 						<div class="media-body">
 							<h4>@candidate.Name</h4>
 							<h4><small>@candidate.Location</small></h4>
-							<strong>Reasons:</strong> @candidate.Reasons<br />
-							<strong>Background:</strong> @candidate.Background<br />
+							@*<strong>Reasons:</strong> @candidate.Reasons<br />
+							<strong>Background:</strong> @candidate.Background<br />*@
 							<h4><small>Nominated by @candidate.Submitter</small></h4>
+						</div>
+						<div class="media-right media-middle text-center">
+							<h4>@{ 
+								switch(candidate.State)
+								{
+									case Elections.Models.CandidateState.Accepted:
+										@: <strong>Accepted</strong><br><small>Needs To Be Seconded</small>
+										break;
+									case Elections.Models.CandidateState.Removed:
+										@: <strong>Removed</strong><br /><small>No Longer Running</small>
+										break;
+									case Elections.Models.CandidateState.Nominated:
+										@: <strong>Nominated</strong><br /><small>Awaiting Candidate Decision</small>
+										break;
+									case Elections.Models.CandidateState.Declined:
+										@: <strong>Declined</strong><br /><small>No Longer Running</small>
+										break;
+									default:
+										@: <strong>Approved</strong><br /><small>Running!</small>";
+										break;
+								}
+							}
+							</h4>
 						</div>
 					</div>
 				</li>
