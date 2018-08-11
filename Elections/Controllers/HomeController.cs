@@ -35,6 +35,12 @@ namespace Elections.Controllers
 			return View();
 		}
 
+		[Route("/Process")]
+		public IActionResult Process()
+		{
+			return View("Process");
+		}
+
 		[HttpPost]
 		[Route("/signup")]
 		public async Task<IActionResult> SignUp([FromForm]string email)
