@@ -1,6 +1,8 @@
 ﻿using Elections.Models;
+using Elections.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,10 +11,11 @@ namespace Elections.Controllers
 	public class CandidatesController : Controller
 	{
 		private readonly ElectionContext _context;
-
-		public CandidatesController(ElectionContext context)
+		private readonly Mailer _mailer;
+		public CandidatesController(ElectionContext context, Mailer mailer)
 		{
 			_context = context;
+			_mailer = mailer;
 		}
 
 		// GET: Candidates
@@ -22,10 +25,10 @@ namespace Elections.Controllers
 			return View("Index", await _context.Candidates.ToListAsync());
 		}
 
-		public async Task<IActionResult> Index()
+		public IActionResult Index()
 		{
 			var model = _context.Candidates
-			.Where(x => !x.Archived)
+			.Where(x => !x.Ignored)
 			.GroupBy(x => x.Position).Select(x => new PositionalGrouping
 			{
 				Candidates = x.OrderBy(c => c.Name).ToList(),
@@ -33,7 +36,7 @@ namespace Elections.Controllers
 				Position = x.Key
 			});
 
-			return View("Candidates", model);	
+			return View("Candidates", model);
 		}
 
 		// GET: Candidates/Details/5
@@ -53,6 +56,74 @@ namespace Elections.Controllers
 
 			return View(candidate);
 		}
+
+		public async Task<IActionResult> SendConfirmation(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var candidate = await _context.Candidates
+				.SingleOrDefaultAsync(m => m.Id == id && !m.Ignored);
+
+			if (candidate == null)
+			{
+				return NotFound("Could not find a matching candidate with the given ID");
+			}
+
+			_mailer.SendCandidateConfirmation(candidate);
+
+			return Ok();
+		}
+
+
+		[Route("confirmation/{guid}")]
+		public async Task<IActionResult> Confirmation(Guid? guid)
+		{
+			if (guid == null)
+			{
+				return NotFound();
+			}
+
+			var candidate = await _context.Candidates
+				.SingleOrDefaultAsync(m => m.Guid == guid);
+
+			if(candidate == null)
+			{
+				return NotFound("We could not find the candidate you were looking for. If you were trying to access your confirmation page and it did not work, please message us on Facebook.");
+			}
+
+			return View("Confirmation", candidate);
+		}
+
+		[HttpPost]
+		[Route("confirmation/{guid}/confirm")]
+		public async Task<IActionResult> Confirm(Guid? guid)
+		{
+			if (guid == null)
+			{
+				return NotFound();
+			}
+
+			var candidate = await _context.Candidates
+				.SingleOrDefaultAsync(m => m.Guid == guid);
+
+			if (candidate == null)
+			{
+				return NotFound("We could not find the candidate you were looking for. If you were trying to submit your confirmation page and it did not work, please message us on Facebook.");
+			}
+
+			candidate.Confirmed = true;
+			candidate.Accepted = true;
+			_context.Update(candidate);
+			await _context.SaveChangesAsync();
+
+			return Ok();
+		}
+
+
+
 
 		// GET: Candidates/Create
 		public IActionResult Create()

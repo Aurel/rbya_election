@@ -50,10 +50,10 @@ namespace Elections.Models
 
 		public Guid Guid { get; set; }
 
+		public bool Confirmed { get; set; }
 		public bool Accepted { get; set; }
-		public bool Approved { get; set; }
-		public bool Seconded { get; set; }
-		public bool Archived { get; set; }
+		public bool Ready { get; set; }
+		public bool Ignored { get; set; }
 
 		public string ImageUrl { get; set; }
 		public bool Selected { get; set; }

@@ -1,0 +1,72 @@
+﻿@model Elections.Models.Candidate
+
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<h2>Confirmation</h2>
+<div id="rbya-confirmation-container">
+    <h1>Accept or Decline Nomination</h1><p>Hello, <strong> @Html.DisplayFor(model => model.Name),</strong></p>
+    <p>
+        You were nominated for the position of <strong>@Html.DisplayFor(model => model.Position)</strong> for the upcoming RBYA committee.
+        In order that we go through with this, we need you to understand the responsibilities of your position
+        and what it means to be part of the RBYA committee. For specific information about the position, you can
+        view the old position descriptions on the <a href="/election">main elections page</a>. In order to accept
+        the nomination, please read the following RBYA Committee Member Contract and sign it digitally at the bottom
+        of the page:
+    </p><br>
+
+    <div id="rbya-contract">
+        <div id="rbya-contract-title">
+            <h3>RBYA Committee Application</h3>
+            <h4>Committee Member Expectations</h4>
+        </div>
+        <p>
+            RBYA Mission Statement: To encourage youth leaders and parents,
+            and to support local churches in their youth ministries by helping
+            the local God-anointed leaders to reach, teach, encourage, excite, unite,
+            and disciple Romanian youth in the USA and Canada.
+        </p>
+        <p><strong>Committee Member Requirements</strong></p>
+        <p>The following is REQUIRED of every RBYA Committee member:</p><ul>
+            <li>A committee member must be a baptized member of a Romanian Baptist church.</li>
+            <li>A committee member must be spiritually mature and dedicated to ministry work.</li>
+            <li>A committee member must be an example in their local church and actively participating in the ministry of their home church.</li>
+            <li>A committee member must be willing to commit to all of the expectations laid out in the Committee Members Expectation form for the entirety of the year they serve.</li>
+        </ul><p></p>
+        <p><strong>Committee Member Expectations</strong></p>
+        <p>The following are the expected commitments of every RBYA Committee member:</p>
+        <p>As an elected Committee Member,</p><ul>
+            <li>I commit to keeping in touch with the rest of the Committee through our annual retreat, weekly phone conference, and by reading and responding to emails from Committee members.</li>
+            <li>I commit to making the weekly phone conferences a priority and will have a regular attendance at them and will give advance notice (at least two days) to the Executive Committee if I have a conflict that will keep me from attending the meeting. </li>
+            <li>I commit to <em>actively participating</em> in every ministry that RBYA is a part of (Colorado Camp, Missions Conferences, communications, fundraising, etc), putting time and energy into the tasks I am assigned to accomplish for the ministry. I understand that physical attendance at these ministries and activities is <em>strongly encouraged</em> as part of my commitment to serve in the RBYA.</li>
+            <li>I commit to serving the team in whatever role is necessary for each ministry and activity and throughout my term year.</li>
+            <li>I commit to sacrificing at least 5 hours a week towards the RBYA and its ministries. If chosen to lead a specific ministry, I commit to assuming responsibility for delegation of tasks and details involved with organizing the ministry.</li>
+            <li>I commit to reaching out to the Executive Committee if I need further guidance or clarification on my responsibilities or if I am not engaged in helping RBYA ministries.</li>
+            <li>I commit to communicating to my home church and other RBA churches about RBYA ministries and activities and actively try to engage the youth of the RBA churches to participate in them. </li>
+            <li>I commit to demonstrating a positive attitude and Christ-like character in all that I do this year, remembering that I am an ambassador of Christ and the RBYA. </li>
+        </ul><p></p>
+    </div>
+    <div id="rbya-signature">
+        <h3>Signature</h3>
+        <p style="text-align:left">
+            In order to confirm who you are, we need you to input your name as a digital signature.
+            Your signature below is a confirmation that you have read the above description, and agree to the conditions listed above.
+            Please enter your name as listed below:
+        </p>
+        <p id="rbya-signature-name">@Html.DisplayFor(x => x.Name)</p>
+        <form id="rbya-signature-form" style="text-align:center; margin-bottom: 20px;">
+            <input style="text-align:center" name="signature">
+            <input name="unique_id" value="@Html.DisplayFor(x => x.Guid)" type="hidden">
+            <div id="rbya-signature-hidden">
+                <p>Please enter the name exactly as shown above.</p><p> If the name above is inaccurate or has a typo and you would like to sign your correct name, check the checkbox below to change the name in our Database</p>
+                <input id="rbya-override" name="override" type="checkbox">
+                <label for="rbya-override">Accept Signature as Given</label>
+            </div>
+        </form>
+    </div>
+    <div id="rbya-accept-decline">
+        <a href="javascript:void" class="rbya-accept-button" id="rbya-accept"><div><h4 class="rbya-button-text">Accept</h4></div></a> or
+        <a href="javascript:void" class="rbya-accept-button" id="rbya-decline"><div><h4 class="rbya-button-text">Decline</h4></div></a>
+    </div>
+</div>
