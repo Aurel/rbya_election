@@ -8,12 +8,13 @@
 	</div>
     <div class="btn-group-lg">
         <a class="btn btn-success" href="/nominate">Nominate somebody</a>
-        @*<a class="btn btn-danger" href="/process">How it Works</a>*@
+        <a class="btn btn-primary" href="/candidates">View Candidates</a>
+        <a class="btn btn-warning" href="/process">How It Works</a>
     </div>
-
-	<h1><strong>Coming Soon</strong></h1>
-    <h4>Feel free to nominate somebody - we're ironing out a few technical bugs but the nomination process should work fine. 
-    It might just be a day or two before we let them know. For now, please use the link above to nominate people. </h4>
+    <br />
+    <h4>The upcoming election season is upon us! Feel free to nominate somebody! Elections will be on <strong>September 1st!</strong><br />
+    <small>The ability to <strong>second </strong>somebody is working but has not been enabled yet. It will be on the website soon. In the meantime, feel free to nominate people to your heart's desire.</small></h4>
+    
 
 	<div class="hidden">
 		@foreach (var position in Enum.GetValues(typeof(Position)))
@@ -26,7 +27,6 @@
 			<br />
 		}
 	</div>
-    <h2>Nominations opening on August 10th.</h2>
 	<div class="col-md-6 col-xs-12 hidden">
 		<form role="form" action="signup" method="post">
 			<div class="panel panel-default" style="margin:20px;">

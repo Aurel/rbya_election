@@ -80,7 +80,7 @@ Your code is {code} if the link below doesn't work feel free to enter on <a href
 
 		private string GetCandidateUrl(Candidate c)
 		{
-			return "http://rbya.vote/candidates/confirmation/" + c.Guid;
+			return "http://rbya.vote/confirmation/" + c.Guid;
 		}
 
 		public MailMessage CreateMail(string subject, string body, string recipient)

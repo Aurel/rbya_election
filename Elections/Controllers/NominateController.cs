@@ -34,7 +34,10 @@ namespace Elections.Controllers
 			{
 				_context.Add(candidate);
 				await _context.SaveChangesAsync();
-				return Redirect("/Candidates"); //TODO: Thank you page.
+
+				_mailer.SendCandidateConfirmation(candidate);
+
+				return Redirect("/Candidates"); 
 			}
 
 			return RedirectToAction(nameof(Nominate));
