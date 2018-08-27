@@ -63,9 +63,9 @@ namespace Elections.Models
 			get
 			{
 				if (Ready) return CandidateState.Seconded;
+				if (Ignored) return CandidateState.Removed;
 				if (Confirmed && Accepted) return CandidateState.Accepted;
 				if (Confirmed && !Accepted) return CandidateState.Declined;
-				if (Ignored) return CandidateState.Removed;
 
 				return CandidateState.Nominated;
 			}

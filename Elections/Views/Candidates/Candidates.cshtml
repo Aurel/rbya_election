@@ -15,7 +15,10 @@
 			@foreach (var candidate in group.Candidates.OrderBy(x => x.State))
 			{
 				<li class="list-group-item">
-					<img src="@candidate.ImageUrl" style="margin:auto;" />
+                    @if(!string.IsNullOrEmpty(candidate.ImageUrl))
+                    {
+                        <img src="@candidate.ImageUrl" style="margin:auto;" />
+                    }
 					<div class="media">
 						<div class="media-body">
 							<h4>@candidate.Name</h4>

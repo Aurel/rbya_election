@@ -6,14 +6,11 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Selected)
-</th>
+            <th>@Html.DisplayNameFor(model => model.State)</th>
                 <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
@@ -26,29 +23,27 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Position)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Reasons)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Background)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.Submitter)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
                 </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.OrderBy(x => x.CreatedDate)) {
         <tr>
             <td>
-                @if(item.Selected)
+                @Html.DisplayFor(modelItem => item.State)
+                @*@if(item.Selected)
                 {
                     <span class="glyphicon glyphicon-star"></span>
-                }
+                }*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -62,21 +57,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Position)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Reasons)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Background)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Submitter)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Manage</a> |
+                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

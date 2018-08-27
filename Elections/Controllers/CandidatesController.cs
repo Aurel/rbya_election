@@ -21,7 +21,7 @@ namespace Elections.Controllers
 
 		// GET: Candidates
 
-		public async Task<IActionResult> Candidate()
+		public async Task<IActionResult> SuperSecretAdminPage()
 		{
 			return View("Index", await _context.Candidates.ToListAsync());
 		}
