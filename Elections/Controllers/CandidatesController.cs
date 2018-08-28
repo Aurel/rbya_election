@@ -40,43 +40,7 @@ namespace Elections.Controllers
 			return View("Candidates", model);
 		}
 
-		// GET: Candidates/Details/5
-		public async Task<IActionResult> Details(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
 
-			var candidate = await _context.Candidates
-				.SingleOrDefaultAsync(m => m.Id == id);
-			if (candidate == null)
-			{
-				return NotFound();
-			}
-
-			return View(candidate);
-		}
-
-		public async Task<IActionResult> SendConfirmation(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
-
-			var candidate = await _context.Candidates
-				.SingleOrDefaultAsync(m => m.Id == id && !m.Ignored);
-
-			if (candidate == null)
-			{
-				return NotFound("Could not find a matching candidate with the given ID");
-			}
-
-			_mailer.SendCandidateConfirmation(candidate);
-
-			return Ok();
-		}
 
         [HttpGet, Route("/comment/{id}")]
         public async Task<IActionResult> Comment(int? id)
@@ -117,13 +81,43 @@ namespace Elections.Controllers
             {
                 return BadRequest("Problem with submitting comment. Please message us to get this resolved ASAP.");
             }
-
+            comment.Id = 0;
             comment.Candidate = candidate;
-            
+
+            _context.Add(comment);
+            await _context.SaveChangesAsync();
+
+            if (candidate.State == CandidateState.Accepted && comment.Type == Models.Comment.CommentType.Positive)
+            {
+                candidate.Ready = true;
+            }
+
+            await _context.SaveChangesAsync();
+
 
             return Json(comment);
         }
 
+        #region Confirmation
+        public async Task<IActionResult> SendConfirmation(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var candidate = await _context.Candidates
+                .SingleOrDefaultAsync(m => m.Id == id && !m.Ignored);
+
+            if (candidate == null)
+            {
+                return NotFound("Could not find a matching candidate with the given ID");
+            }
+
+            _mailer.SendCandidateConfirmation(candidate);
+
+            return Ok();
+        }
 
 
         [Route("confirmation/{guid}")]
@@ -182,10 +176,12 @@ namespace Elections.Controllers
 			return Ok(result);
 		}
 
-		#region Create
+        #endregion
 
-		// GET: Candidates/Create
-		public IActionResult Create()
+        #region Create
+
+        // GET: Candidates/Create
+        public IActionResult Create()
 		{
 			return View();
 		}
@@ -293,9 +289,30 @@ namespace Elections.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		#endregion
+        #endregion
 
-		private bool CandidateExists(int id)
+
+        // GET: Candidates/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var candidate = await _context.Candidates
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (candidate == null)
+            {
+                return NotFound();
+            }
+
+            return View(candidate);
+        }
+
+
+
+        private bool CandidateExists(int id)
 		{
 			return _context.Candidates.Any(e => e.Id == id);
 		}

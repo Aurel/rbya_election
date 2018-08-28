@@ -18,7 +18,11 @@ namespace Elections.Models
 			modelBuilder.Entity<Candidate>()
 				.Property(b => b.CreatedDate)
 				.HasDefaultValueSql("getdate()");
-		}
+
+            modelBuilder.Entity<Comment>()
+            .Property(b => b.CreatedDate)
+            .HasDefaultValueSql("getdate()");
+        }
 
 		public DbSet<Candidate> Candidates { get; set; }
 		public DbSet<Voter> Voters { get; set; }

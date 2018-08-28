@@ -2,32 +2,33 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h2>Index</h2>
-<p>
-    Our candidates need to be seconded or approved
-    by somebody else in order for them to be accepted. However, this is an opportunity to voice
-    your support or any comments you may have about the candidate, either positive or negative.
+<div class="center-block text-center container">
 
-    We will look through them and mark the appropriate candidates as seconded after you have submitted your support.
-</p>
+    <div class="row" style="margin-bottom:100px;">
+        <img src="~/images/elections.png" style="margin:auto; width:25%;" />
+    </div>
 
-<h3>Candidates Still In Need of Seconding</h3>
-<ul>
-    @foreach (var candidate in Model.Where(x => !x.Ready))
-    {
-        <li><a href="/comment/@candidate.Id">@candidate.Name</a></li>
-    }
-</ul>
+    <h2>Second / Comment On A Candidate</h2>
 
-@if (Model.Where(x => x.Ready).Count() > 0)
-{
-    <h3>Approved Candidates</h3>
-    <p>The following candidates have already been seconded, but any feedback may help, either positive or negative.</p>
+</div>
+    <h3>Candidates Still In Need of Seconding</h3>
     <ul>
-        @foreach (var candidate in Model.Where(x => x.Ready))
+        @foreach (var candidate in Model.Where(x => !x.Ready))
         {
-            <li>@candidate.Name</li>
+            <li><h4><a href="/comment/@candidate.Id">@candidate.Name</a></h4></li>
         }
     </ul>
-}
+
+    @if (Model.Where(x => x.Ready).Count() > 0)
+    {
+        <hr />
+        <h3>Approved Candidates</h3>
+        <p>The following candidates have already been seconded, but any feedback may help, either positive or negative.</p>
+        <ul>
+            @foreach (var candidate in Model.Where(x => x.Ready))
+            {
+                <li><h4><a href="/comment/@candidate.Id">@candidate.Name</a></h4></li>
+            }
+        </ul>
+    }
 

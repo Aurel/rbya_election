@@ -18,13 +18,13 @@ namespace Elections.Controllers
         // GET: Comments
         public async Task<IActionResult> List()
         {
-            return View("Index", await _context.Comments.ToListAsync());
+            return View("Index", await _context.Comments.Include(x =>x.Candidate).ToListAsync());
         }
 
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            var candidates = await _context.Candidates.Where(x => !x.Ignored).ToListAsync();
+            var candidates = await _context.Candidates.Where(x => !x.Ignored && (x.Ready || (x.Accepted && x.Confirmed))).ToListAsync();
 
             return View("Comment", candidates);
         }
@@ -46,12 +46,6 @@ namespace Elections.Controllers
             }
 
             return View(comment);
-        }
-
-        // GET: Comments/Create
-        public IActionResult Create()
-        {
-            return View();
         }
 
         // POST: Comments/Create

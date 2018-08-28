@@ -12,7 +12,7 @@
 			<h2>@Html.DisplayFor(modelItem => group.Position)</h2>
 		</div>
 		<ul class="list-group">
-			@foreach (var candidate in group.Candidates.OrderBy(x => x.State))
+			@foreach (var candidate in group.Candidates.OrderByDescending(x => x.State))
 			{
 				<li class="list-group-item">
                     @if(!string.IsNullOrEmpty(candidate.ImageUrl))
@@ -32,7 +32,7 @@
 								switch(candidate.State)
 								{
 									case Elections.Models.CandidateState.Accepted:
-										@: <strong>Accepted</strong><br><small>Needs To Be Seconded</small>
+										@: <strong>Accepted</strong><br><small><a href="/comment/@candidate.Id/">Needs To Be Seconded</a></small>
 										break;
 									case Elections.Models.CandidateState.Removed:
 										@: <strong>Removed</strong><br /><small>No Longer Running</small>
@@ -44,7 +44,7 @@
 										@: <strong>Declined</strong><br /><small>No Longer Running</small>
 										break;
 									default:
-										@: <strong>Approved</strong><br /><small>Running!</small>";
+										@: <strong>Approved</strong><br /><small>Running!</small>
 										break;
 								}
 							}
