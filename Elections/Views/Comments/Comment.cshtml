@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Elections.Models.Candidate>
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>Index</h2>
+<p>
+    Our candidates need to be seconded or approved
+    by somebody else in order for them to be accepted. However, this is an opportunity to voice
+    your support or any comments you may have about the candidate, either positive or negative.
+
+    We will look through them and mark the appropriate candidates as seconded after you have submitted your support.
+</p>
+
+<h3>Candidates Still In Need of Seconding</h3>
+<ul>
+    @foreach (var candidate in Model.Where(x => !x.Ready))
+    {
+        <li><a href="/comment/@candidate.Id">@candidate.Name</a></li>
+    }
+</ul>
+
+@if (Model.Where(x => x.Ready).Count() > 0)
+{
+    <h3>Approved Candidates</h3>
+    <p>The following candidates have already been seconded, but any feedback may help, either positive or negative.</p>
+    <ul>
+        @foreach (var candidate in Model.Where(x => x.Ready))
+        {
+            <li>@candidate.Name</li>
+        }
+    </ul>
+}
+

@@ -1,0 +1,45 @@
+﻿@model Elections.Models.Comment
+@{
+    ViewData["Title"] = "Comment";
+}
+<h2>Submit a comment for <strong>@Model.Candidate.Name</strong></h2>
+<p>We want to make sure that the people in the RBYA are strong believers who can be good role models for others. 
+    Please leave us a description helping us understand why @Model.Candidate.Name would be a good fit for the RBYA!</p>
+
+<p>
+    
+    If they are not a good fit or you believe they would be more detrimental than helpful, please leave a comment but be sure to mark it as negative so that we do not automatically approve the person.</p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form  method="post" action="/comment/@Model.Candidate.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" asp-items="@Html.GetEnumSelectList<Comment.CommentType>()" class="form-control"></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Submitter" class="control-label"></label>
+                <input asp-for="Submitter" class="form-control" />
+                <span asp-validation-for="Submitter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmitterEmail" class="control-label"></label>
+                <input asp-for="SubmitterEmail" class="form-control" />
+                <span asp-validation-for="SubmitterEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

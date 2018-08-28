@@ -18,13 +18,13 @@ namespace Elections.Controllers
 			_context = context;
 			_mailer = mailer;
 		}
-
-		// GET: Candidates
-
+        
 		public async Task<IActionResult> SuperSecretAdminPage()
 		{
 			return View("Index", await _context.Candidates.ToListAsync());
 		}
+
+
 
 		public IActionResult Index()
 		{
@@ -78,8 +78,55 @@ namespace Elections.Controllers
 			return Ok();
 		}
 
+        [HttpGet, Route("/comment/{id}")]
+        public async Task<IActionResult> Comment(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
 
-		[Route("confirmation/{guid}")]
+            var candidate = await _context.Candidates
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (candidate == null)
+            {
+                return NotFound();
+            }
+
+            return View("Comment", new Comment { Candidate = candidate });
+        }
+
+
+        [HttpPost, Route("/comment/{id}")]
+        public async Task<IActionResult> CommentSubmission(Comment comment, [FromRoute(Name = "id")] int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var candidate = await _context.Candidates
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if (candidate == null)
+            {
+                return NotFound();
+            }
+
+            if (comment == null)
+            {
+                return BadRequest("Problem with submitting comment. Please message us to get this resolved ASAP.");
+            }
+
+            comment.Candidate = candidate;
+            
+
+            return Json(comment);
+        }
+
+
+
+        [Route("confirmation/{guid}")]
 		public async Task<IActionResult> Confirmation(Guid? guid)
 		{
 			if (guid == null)
