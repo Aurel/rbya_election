@@ -94,8 +94,14 @@ namespace Elections.Controllers
 
             await _context.SaveChangesAsync();
 
-
-            return Json(comment);
+            if(comment.Type == Models.Comment.CommentType.Negative)
+            {
+                return Ok("Thank you for your submission. Your response has been recorded and we will be sure to analyze the feedback.");
+            }
+            else
+            {
+                return Ok("Thank you for your submission. Your response has been recorded and the candidate will be marked as Seconding if they were not already. We will take a look at the content of your response before the final election.");
+            }
         }
 
         #region Confirmation
