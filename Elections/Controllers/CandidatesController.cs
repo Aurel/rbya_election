@@ -42,7 +42,7 @@ namespace Elections.Controllers
 
 
 
-        [HttpGet, Route("/comment/{id}")]
+		[HttpGet, Route("/comment/{id}")]
         public async Task<IActionResult> Comment(int? id)
         {
             if(id == null)
@@ -60,8 +60,23 @@ namespace Elections.Controllers
             return View("Comment", new Comment { Candidate = candidate });
         }
 
+		public IActionResult Summary()
+		{
+			var model = _context.Candidates
+			.Where(x => x.State == CandidateState.Seconded || x.State == CandidateState.Accepted)
+				.GroupBy(x => x.Position).Select(x => new PositionalGrouping
+				{
+					Candidates = x.OrderBy(c => c.Name).ToList(),
+					MaxCandidates = x.Key == Position.Committee ? 15 : 1,
+					Position = x.Key
+				});
 
-        [HttpPost, Route("/comment/{id}")]
+			return View("Summary", model);
+		}
+
+
+
+		[HttpPost, Route("/comment/{id}")]
         public async Task<IActionResult> CommentSubmission(Comment comment, [FromRoute(Name = "id")] int? id)
         {
             if (id == null)
