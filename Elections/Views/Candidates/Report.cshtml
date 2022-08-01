@@ -4,8 +4,8 @@
 	ViewData["Title"] = "RBYA Elections - Voting";
 }
 
-<h1 class="text-center">RBYA Voting</h1>
-@foreach (var group in Model.OrderBy(x => (int) x.Position))
+<h1 class="text-center">RBYA Voting - Candidate Report</h1>
+@foreach (var group in Model)
 {
 	<div class="panel panel-default">
 		<div class="panel-heading">

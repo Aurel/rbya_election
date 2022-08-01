@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20210728225636_RemoveElections")]
+    partial class RemoveElections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,8 +40,6 @@ namespace Elections.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getdate()");
-
-                    b.Property<int>("ElectionYear");
 
                     b.Property<string>("Email")
                         .IsRequired();
@@ -106,26 +105,6 @@ namespace Elections.Migrations
                     b.HasIndex("CandidateId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Elections.Models.Election", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("ElectionDay");
-
-                    b.Property<DateTime>("NominationCutoff");
-
-                    b.Property<bool>("NominationsOpen");
-
-                    b.Property<bool>("VotingOpen");
-
-                    b.Property<int>("Year");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Elections");
                 });
 
             modelBuilder.Entity("Elections.Models.Vote", b =>

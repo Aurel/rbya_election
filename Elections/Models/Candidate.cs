@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Elections.Models
 {
@@ -57,7 +58,8 @@ namespace Elections.Models
 
 		public string ImageUrl { get; set; }
 		public bool Selected { get; set; }
-		
+		public int ElectionYear { get; set; }
+
 		public CandidateState State
 		{
 			get

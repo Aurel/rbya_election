@@ -15,4 +15,18 @@ namespace Elections
 		public List<PositionalGrouping> Groupings;
 		public CandidateState state;
 	}
+
+	public class CandidateComment
+	{
+		public Candidate candidate;
+		public List<Comment> comments;
+	}
+
+	public class PositionalGroupingWithAllComments
+	{
+		public Position Position { get; set; }
+		public List<Candidate> Candidates { get; set; }
+		public int MaxCandidates { get; set; }
+		public List<Comment> Comments { get; set; }
+	}
 }

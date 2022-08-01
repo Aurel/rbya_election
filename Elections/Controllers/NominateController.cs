@@ -9,11 +9,13 @@ namespace Elections.Controllers
 	{
 		private readonly ElectionContext _context;
 		private readonly Mailer _mailer;
+		private readonly ElectionDecider _decider;
 
-		public NominateController(ElectionContext context, Mailer mailer)
+		public NominateController(ElectionContext context, Mailer mailer, ElectionDecider decider)
 		{
 			_context = context;
 			_mailer = mailer;
+			_decider = decider;
 		}
 
 		[HttpGet]
@@ -32,7 +34,10 @@ namespace Elections.Controllers
 
 			if (ModelState.IsValid)
 			{
+				var currentElection = _decider.GetCurrentElection();
+				candidate.ElectionYear = currentElection.Year;
 				_context.Add(candidate);
+
 				await _context.SaveChangesAsync();
 
 				_mailer.SendCandidateConfirmation(candidate);

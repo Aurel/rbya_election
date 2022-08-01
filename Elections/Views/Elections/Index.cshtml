@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Elections.Models.Election>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>View</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ElectionDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NominationCutoff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VotingOpen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NominationsOpen)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ElectionDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NominationCutoff)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VotingOpen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NominationsOpen)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Year">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Year">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Year">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

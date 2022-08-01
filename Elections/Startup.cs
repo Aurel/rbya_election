@@ -26,7 +26,7 @@ namespace Elections
 			var connection = Configuration.GetConnectionString("DatabaseContext");
 			services.AddDbContext<Models.ElectionContext>(options => options.UseSqlServer(connection));
 			services.AddMvc();
-
+			services.AddScoped<ElectionDecider>();
 			services.Configure<GmailOptions>(Configuration.GetSection("Gmail"));
 			services.AddScoped<Mailer>();
 		}

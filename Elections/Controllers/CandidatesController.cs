@@ -13,34 +13,55 @@ namespace Elections.Controllers
 	{
 		private readonly ElectionContext _context;
 		private readonly Mailer _mailer;
-		public CandidatesController(ElectionContext context, Mailer mailer)
+		private readonly ElectionDecider _decider;
+		public CandidatesController(ElectionContext context, Mailer mailer, ElectionDecider decider)
 		{
 			_context = context;
 			_mailer = mailer;
+			_decider = decider;
 		}
-        
+
 		public async Task<IActionResult> SuperSecretAdminPage()
 		{
-			return View("Index", await _context.Candidates.ToListAsync());
+			var currentElection = _decider.GetCurrentElection();
+
+			return View("Index", await _context.Candidates
+				.Where(x => x.ElectionYear == currentElection.Year)
+				.ToListAsync());
 		}
-
-
 
 		public IActionResult Index()
 		{
+			var currentElection = _decider.GetCurrentElection();
+
 			var model = _context.Candidates
-			.Where(x => !x.Ignored)
-			.GroupBy(x => x.Position).Select(x => new PositionalGrouping
-			{
-				Candidates = x.OrderBy(c => c.Name).ToList(),
-				MaxCandidates = x.Key == Position.Committee ? 15 : 1,
-				Position = x.Key
-			});
+				.Where(x => x.ElectionYear == currentElection.Year)
+				.Where(x => !x.Ignored)
+				.GroupBy(x => x.Position).Select(x => new PositionalGrouping
+				{
+					Candidates = x.OrderBy(c => c.Name).ToList(),
+					MaxCandidates = x.Key == Position.Committee ? 15 : 1,
+					Position = x.Key
+				});
 
 			return View("Candidates", model);
 		}
 
+		[Route("candidates/year/{year}")]
+		public IActionResult FromYear(int year)
+		{
+			var model = _context.Candidates
+				.Where(x => x.ElectionYear == year)
+				.Where(x => !x.Ignored)
+				.GroupBy(x => x.Position).Select(x => new PositionalGrouping
+				{
+					Candidates = x.OrderBy(c => c.Name).ToList(),
+					MaxCandidates = x.Key == Position.Committee ? 15 : 1,
+					Position = x.Key
+				});
 
+			return View("Candidates", model);
+		}
 
 		[HttpGet, Route("/comment/{id}")]
         public async Task<IActionResult> Comment(int? id)
@@ -62,8 +83,12 @@ namespace Elections.Controllers
 
 		public IActionResult Summary()
 		{
+			var currentElection = _decider.GetCurrentElection();
+
 			var model = _context.Candidates
-			.Where(x => x.State == CandidateState.Seconded || x.State == CandidateState.Accepted)
+				.Where(x => x.ElectionYear == currentElection.Year)
+				.Where(x => x.State == CandidateState.Seconded || x.State == CandidateState.Accepted)
+				.Where(x => x.State != CandidateState.Removed)
 				.GroupBy(x => x.Position).Select(x => new PositionalGrouping
 				{
 					Candidates = x.OrderBy(c => c.Name).ToList(),
@@ -73,6 +98,26 @@ namespace Elections.Controllers
 
 			return View("Summary", model);
 		}
+
+		public IActionResult Report()
+		{
+			var currentElection = _decider.GetCurrentElection();
+			var comments = _context.Comments.Include(c => c.Candidate);
+
+			var model = _context.Candidates
+				.Where(x => x.ElectionYear == currentElection.Year)
+				.Where(x => x.State == CandidateState.Seconded || x.State == CandidateState.Accepted)
+				.GroupBy(x => x.Position).Select(x => new PositionalGroupingWithAllComments
+				{
+					Candidates = x.OrderBy(c => c.Name).ToList(),
+					MaxCandidates = x.Key == Position.Committee ? 15 : 1,
+					Position = x.Key,
+					Comments = comments.Where(c => x.Any(g => g.Id == c.Candidate.Id)).ToList()
+				});
+
+			return View("Summary", model);
+		}
+
 
 
 
@@ -184,10 +229,17 @@ namespace Elections.Controllers
 			_context.Update(candidate);
 			await _context.SaveChangesAsync();
 
-			var result = "Thank you for submitting your response.";
+			var result = "Thank you for submitting your response. <br />";
 			if(confirmation.Accepted)
 			{
-				result += "Your response has been noted and you are now eligible to be seconded.";
+				result += "Your response has been noted and you are now eligible to be seconded. Sending confirmation email... <br />";
+
+				var response = _mailer.SendConfirmationEmailForCandidateAcceptance(candidate);
+
+				if (!string.IsNullOrEmpty(response))
+				{
+					result += " Something went wrong in sending you a confirmation email: " + response;
+				}
 			}
 			else
 			{
@@ -214,8 +266,11 @@ namespace Elections.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("Name,Church,Location,Position,Reasons,Background,Submitter,Comments,ImageUrl,Selected,Id")] Candidate candidate)
 		{
+			var currentElection = _decider.GetCurrentElection();
+			
 			if (ModelState.IsValid)
 			{
+				candidate.ElectionYear = currentElection.Year;
 				_context.Add(candidate);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));

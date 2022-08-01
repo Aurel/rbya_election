@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20210724202715_CandidatesArePartOfAnElection")]
+    partial class CandidatesArePartOfAnElection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +41,7 @@ namespace Elections.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<int>("ElectionYear");
+                    b.Property<int?>("ElectionYear");
 
                     b.Property<string>("Email")
                         .IsRequired();
@@ -74,6 +75,8 @@ namespace Elections.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ElectionYear");
 
                     b.ToTable("Candidates");
                 });
@@ -110,7 +113,7 @@ namespace Elections.Migrations
 
             modelBuilder.Entity("Elections.Models.Election", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Year")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ElectionDay");
@@ -121,9 +124,7 @@ namespace Elections.Migrations
 
                     b.Property<bool>("VotingOpen");
 
-                    b.Property<int>("Year");
-
-                    b.HasKey("Id");
+                    b.HasKey("Year");
 
                     b.ToTable("Elections");
                 });
@@ -162,6 +163,13 @@ namespace Elections.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Voters");
+                });
+
+            modelBuilder.Entity("Elections.Models.Candidate", b =>
+                {
+                    b.HasOne("Elections.Models.Election", "Election")
+                        .WithMany()
+                        .HasForeignKey("ElectionYear");
                 });
 
             modelBuilder.Entity("Elections.Models.Comment", b =>

@@ -28,5 +28,6 @@ namespace Elections.Models
 		public DbSet<Voter> Voters { get; set; }
 		public DbSet<Vote> Votes { get; set; }
 		public DbSet<Comment> Comments { get; set; }
+		public DbSet<Election> Elections { get; set; }
 	}
 }

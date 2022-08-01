@@ -1,4 +1,5 @@
 ﻿using Elections.Models;
+using Elections.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -9,22 +10,33 @@ namespace Elections.Controllers
     public class CommentsController : Controller
     {
         private readonly ElectionContext _context;
-
-        public CommentsController(ElectionContext context)
+        private readonly ElectionDecider _decider;
+        public CommentsController(ElectionContext context, ElectionDecider decider)
         {
             _context = context;
+            _decider = decider;
         }
 
         // GET: Comments
         public async Task<IActionResult> List()
         {
-            return View("Index", await _context.Comments.Include(x =>x.Candidate).ToListAsync());
+            var currentYear = _decider.Year;
+
+            return View("Index", await _context.Comments
+                .Where(c => c.Content.Contains(" "))
+                .Include(x =>x.Candidate)
+                .Where(c => c.Candidate.ElectionYear == currentYear)
+                .ToListAsync());
         }
 
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            var candidates = await _context.Candidates.Where(x => !x.Ignored && (x.Ready || (x.Accepted && x.Confirmed))).ToListAsync();
+            var year = _decider.GetCurrentElection().Year;
+
+            var candidates = await _context.Candidates
+                .Where(x => x.ElectionYear == year)
+                .Where(x => !x.Ignored && (x.Ready || (x.Accepted && x.Confirmed))).ToListAsync();
 
             return View("Comment", candidates);
         }
@@ -55,6 +67,11 @@ namespace Elections.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Content,Type,Submitter,SubmitterEmail,Id")] Comment comment)
         {
+            if(!comment.Content.Contains(" "))
+			{
+                return BadRequest("Please enter a valid comment.");
+			}
+
             if (ModelState.IsValid)
             {
                 _context.Add(comment);

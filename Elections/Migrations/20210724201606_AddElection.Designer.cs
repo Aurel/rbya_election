@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20210724201606_AddElection")]
+    partial class AddElection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,8 +40,6 @@ namespace Elections.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getdate()");
-
-                    b.Property<int>("ElectionYear");
 
                     b.Property<string>("Email")
                         .IsRequired();
@@ -110,7 +109,7 @@ namespace Elections.Migrations
 
             modelBuilder.Entity("Elections.Models.Election", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Year")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ElectionDay");
@@ -121,9 +120,7 @@ namespace Elections.Migrations
 
                     b.Property<bool>("VotingOpen");
 
-                    b.Property<int>("Year");
-
-                    b.HasKey("Id");
+                    b.HasKey("Year");
 
                     b.ToTable("Elections");
                 });

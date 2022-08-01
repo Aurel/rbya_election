@@ -11,27 +11,30 @@
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.State)</th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Church)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Position)
-                </th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.Reasons)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Background)
-                </th>*@
-                <th>
-                    @Html.DisplayNameFor(model => model.Submitter)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Church)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            @*<th>
+            @Html.DisplayNameFor(model => model.Reasons)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Background)
+        </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Submitter)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,9 +44,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.State)
                 @*@if(item.Selected)
-                {
-                    <span class="glyphicon glyphicon-star"></span>
-                }*@
+            {
+                <span class="glyphicon glyphicon-star"></span>
+            }*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -57,12 +60,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Position)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Reasons)
-            </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Background)
-            </td>*@
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.Reasons)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Background)
+        </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Submitter)
             </td>

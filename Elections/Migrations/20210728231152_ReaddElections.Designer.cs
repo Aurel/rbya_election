@@ -11,9 +11,10 @@ using System;
 namespace Elections.Migrations
 {
     [DbContext(typeof(ElectionContext))]
-    partial class ElectionContextModelSnapshot : ModelSnapshot
+    [Migration("20210728231152_ReaddElections")]
+    partial class ReaddElections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +41,7 @@ namespace Elections.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<int>("ElectionYear");
+                    b.Property<int?>("ElectionId");
 
                     b.Property<string>("Email")
                         .IsRequired();
@@ -74,6 +75,8 @@ namespace Elections.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ElectionId");
 
                     b.ToTable("Candidates");
                 });
@@ -162,6 +165,13 @@ namespace Elections.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Voters");
+                });
+
+            modelBuilder.Entity("Elections.Models.Candidate", b =>
+                {
+                    b.HasOne("Elections.Models.Election", "Election")
+                        .WithMany()
+                        .HasForeignKey("ElectionId");
                 });
 
             modelBuilder.Entity("Elections.Models.Comment", b =>
