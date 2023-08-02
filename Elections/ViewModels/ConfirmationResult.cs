@@ -10,5 +10,6 @@ namespace Elections.ViewModels
 		public Guid UniqueId { get; set; }
 		public bool Accepted { get; set; }
 		public string Signature { get; set; }
+		public string ReferenceEmail { get; set; }
 	}
 }

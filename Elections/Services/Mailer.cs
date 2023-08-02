@@ -59,8 +59,6 @@ Your code is {code} if the link below doesn't work feel free to enter on <a href
 At this point, you will need to be <i>seconded</i> by somebody in the community and your 
 pastor will be contacted so that we can get a referral from them.</p>
 
-<p>As a reminder, this year's elections will be held in Chicago, IL at 
-Romanian Baptist Church of Metropolitan Chicago (484 East Northwest Highway, Des Plaines, IL, 60016, United States) at 10:00 AM.</p>
 
 <p><strong>We ask all that are nominated to be present for elections and have a 1-3 min introduction of themselves in front of the youth.</strong><br />
 If you are <strong>unable</strong> to make it, we ask that you make a 1 minute video introducing yourself and explaining why you are wanting to serve!<br />
@@ -100,12 +98,11 @@ RBYA Elections Team</p>
 		public string SendCandidateConfirmation(Candidate c)
 		{
 			var body = $@"
-<p>Congratulations, {c.Name}! You have been nominated to serve for the for the position of {c.Position} in the RBYA Committee in the 2021-2022 year!</p>
+<p>Congratulations, {c.Name}! You have been nominated to serve for the for the position of {c.Position} in the RBYA Committee in the {c.ElectionYear}-{c.ElectionYear+1} year!</p>
 <p>In order for us to confirm your nomination, we've generated a unique page for you to visit on our website. Please visit there to either accept or decline the nomination.</p>
 <p><a href=""{GetCandidateUrl(c)}"">Click Here To Accept or Decline the Nomination</a></p>
 <p>Please visit <a href=""http://www.rbya.org/elections""> our elections page </a> for more information. Be sure to confirm your nomination ASAP!
 
-<p>This year's elections will be held in Chicago, IL at Romanian Baptist Church of Metropolitan Chicago (484 East Northwest Highway, Des Plaines, IL, 60016, United States) at 10:00 AM.</p>
 
 <p><strong>We ask all that are nominated to be present for elections and have a 1-3 min introduction of themselves in front of the youth.</strong><br />
 If you are <strong>unable</strong> to make it, we ask that you make a 1 minute video introducing yourself and explaining why you are wanting to serve!<br />

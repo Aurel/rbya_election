@@ -45,5 +45,20 @@ namespace Elections.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
+		public IActionResult Edit(int? year)
+        {
+			if(!year.HasValue)
+            {
+				return NotFound();
+            }
+
+			var election = _context.Elections.SingleOrDefault(e => e.Year == year);
+			if(election == null)
+            {
+				return NotFound();
+            }
+
+			return View(election);
+        }
 	}
 }

@@ -225,6 +225,7 @@ namespace Elections.Controllers
 
 			candidate.Confirmed = true;
 			candidate.Accepted = confirmation.Accepted;
+			candidate.PastorContact = confirmation.ReferenceEmail;
 
 			_context.Update(candidate);
 			await _context.SaveChangesAsync();

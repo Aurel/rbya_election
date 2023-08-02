@@ -60,6 +60,12 @@ namespace Elections.Models
 		public bool Selected { get; set; }
 		public int ElectionYear { get; set; }
 
+		// Pastor Email is provided by the candidate, since
+		// a nominator may not know the email address of their 
+		// pastor or youth leader.
+		public string PastorContact { get; set; }
+
+
 		public CandidateState State
 		{
 			get

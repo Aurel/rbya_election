@@ -57,14 +57,27 @@
         <h4 id="rbya-signature-name">@Html.DisplayFor(x => x.Name)</h4>
         <form asp-action="confirm" id="rbya-signature-form" style="text-align:center; margin-bottom: 20px;">
             <input id="rbya-signature-name-hidden" type="hidden" value="@Html.DisplayFor(x => x.Name)">
-            <div class="row"><div class="form-group col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
-                <input style="text-align:center" class="form-control" name="signature"
-                        data-val-required="Please sign your name in the box exactly as seen above."
-                        data-msg-equalto="Please sign it exactly. If it is spelled incorrectly, message us and we'll fix it later."
-                        data-val="true"
-                        data-rule-equalto="#rbya-signature-name-hidden">
-                <span class="text-danger field-validation-valid" data-valmsg-for="signature" data-valmsg-replace="true"></span>
-            </div></div>
+            <div class="row">
+                <div class="form-group col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+                    <input style="text-align:center" class="form-control" name="signature"
+                           data-val-required="Please sign your name in the box exactly as seen above."
+                           data-msg-equalto="Please sign it exactly. If it is spelled incorrectly, message us and we'll fix it later."
+                           data-val="true"
+                           data-rule-equalto="#rbya-signature-name-hidden">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="signature" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <h3>Pastor or Youth Pastor Email Address</h3>
+                <p>Before you can officially run, we would like the opportunity to reach out to your pastor or youth pastor to talk to them about you running for this position. <br />Please provide their contact information and someone from the RBYA Committee will reach out to them.</p>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+                    <input style="text-align:center" class="form-control" name="referenceemail">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="referenceemail" data-valmsg-replace="true"></span>
+                </div>
+            </div>
             <input name="UniqueId" value="@Html.DisplayFor(x => x.Guid)" type="hidden" />
             <input name="Accepted" type="hidden" />
         </form>
